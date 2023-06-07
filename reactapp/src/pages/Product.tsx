@@ -1,26 +1,29 @@
+import { useState, useEffect } from "react";
 import { PRODUCT_TITLE, SYSTEM_NAME } from "../config/constants"
-import { Box, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material"
-import api from "../../services/productAPI"
-import { useState, useEffect } from "react"
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Button } from "@mui/material"
+
 
 const Product = () => {
 
-    // Create state for products
-    const [products, setProducts] = useState([])
+    const [productsd, setProductsd] = useState([]);
 
-    // Read all products
-    const readAllProducts = () => {
-        api.getAllProducts().then(response => {
-            setProducts(response.data.data)
-        })
-    }
 
-    // initial load with useEffect
+    // Note: the empty deps array [] means
+    // this useEffect will run once
+    // similar to componentDidMount()
     useEffect(() => {
-        readAllProducts()
+        fetch("http://localhost:1337/api/products?populate=*")
+            .then(res => res.json())
+            .then(
+                (result) => {
+
+                    setProductsd(result.data);
+                },
+            )
     }, [])
 
-    console.log(products)
+    // console.log(productsd);
+
 
     // Set title
     document.title = PRODUCT_TITLE + ' | ' + SYSTEM_NAME
@@ -44,13 +47,13 @@ const Product = () => {
                         </TableHead>
                         <TableBody>
                             {
-                                products.map((product: any, index: any) => (
+                                productsd.map((product: any, index: any) => (
                                     <TableRow key={index}>
                                         <TableCell>{product.id}</TableCell>
                                         <TableCell>{product.attributes.title}</TableCell>
                                         <TableCell>{product.attributes.price}</TableCell>
                                         <TableCell>
-                                            <img src={import.meta.env.VITE_BASE_IMAGE_URL + product.attributes.image.data[0].attributes.url} alt="" width={50} />
+                                            <img src={"http://localhost:1337" + product.attributes.image.data[0].attributes.url} alt="" width={50} />
                                         </TableCell>
                                         <TableCell>{product.attributes.qty}</TableCell>
                                         <TableCell>{product.attributes.publishedAt}</TableCell>

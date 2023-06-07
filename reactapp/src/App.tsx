@@ -3,13 +3,13 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import AuthLayout from './layouts/AuthLayout.tsx'
 import BackendLayout from './layouts/BackendLayout.tsx'
-import Login from './pages/Login.tsx'
+
 import Dashboard from "./pages/Dashboard.tsx"
 import Product from "./pages/Product.tsx"
 import Report from "./pages/Report.tsx"
 import Setting from "./pages/Setting.tsx"
 import { DASHBOARD_PATH, PRODUCT_PATH, REPORT_PATH, SETTING_PATH } from './config/constants.ts'
-import ProtectedRoute from "./router/ProtectedRoute.tsx"
+
 function App() {
 
 
@@ -35,10 +35,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<AuthLayout />}>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={<BackendLayout />} />
         </Route>
 
-        <Route element={<ProtectedRoute><BackendLayout /></ProtectedRoute>}>
+        <Route element={<BackendLayout />}>
           <Route path={DASHBOARD_PATH} element={<Dashboard />} />
           <Route path={PRODUCT_PATH} element={<Product />} />
           <Route path={REPORT_PATH} element={<Report />} />
